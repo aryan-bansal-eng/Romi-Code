@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.nio.channels.Channel;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -32,6 +34,8 @@ public class OnBoardIO extends SubsystemBase {
   private static final double MESSAGE_INTERVAL = 1.0;
   private double m_nextMessageTime;
 
+  private ChannelMode dio1Channel, dio2Channel;
+
   public enum ChannelMode {
     INPUT,
     OUTPUT
@@ -55,6 +59,9 @@ public class OnBoardIO extends SubsystemBase {
     } else {
       m_redLed = new DigitalOutput(2);
     }
+
+    dio1Channel = dio1;
+    dio2Channel = dio2;
   }
 
   /** Gets if the A button is pressed. */
@@ -114,6 +121,16 @@ public class OnBoardIO extends SubsystemBase {
         m_nextMessageTime = currentTime + MESSAGE_INTERVAL;
       }
     }
+  }
+
+  public ChannelMode getDIO1()
+  {
+    return dio1Channel;
+  }
+
+  public ChannelMode getDIO2()
+  {
+    return dio2Channel;
   }
 
   /** Sets the yellow LED. */

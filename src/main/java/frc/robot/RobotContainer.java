@@ -27,9 +27,11 @@ import edu.wpi.first.wpilibj2.command.button.Button;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  private final boolean isLED = true;
+
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_drivetrain = new Drivetrain();
-  private final OnBoardIO m_onboardIO = new OnBoardIO(ChannelMode.INPUT, ChannelMode.INPUT);
+  private final OnBoardIO m_onboardIO = new OnBoardIO(isLED ? ChannelMode.OUTPUT : ChannelMode.INPUT, isLED ? ChannelMode.OUTPUT : ChannelMode.INPUT);
 
   // Assumes a gamepad plugged into channnel 0
   private final Joystick m_controller = new Joystick(0);
@@ -66,15 +68,18 @@ public class RobotContainer {
     m_drivetrain.setDefaultCommand(getArcadeDriveCommand());
 
     // Example of how to use the onboard IO
-    Button onboardButtonA = new Button(m_onboardIO::getButtonAPressed);
-    onboardButtonA
-        .whenActive(new PrintCommand("Button A Pressed"))
-        .whenInactive(new PrintCommand("Button A Released"));
+    if(isLED)
+    {
+      Button onboardButtonA = new Button(m_onboardIO::getButtonAPressed);
+      onboardButtonA
+          .whenActive(new PrintCommand("Button A Pressed"))
+          .whenInactive(new PrintCommand("Button A Released"));
+    }
 
     // Setup SmartDashboard options
     m_chooser.setDefaultOption("Auto Routine Distance", new AutonomousDistance(m_drivetrain));
     m_chooser.addOption("Auto Routine Time", new AutonomousTime(m_drivetrain));
-    m_chooser.addOption("Aryan Auton Command", new Auton(m_drivetrain));
+    m_chooser.addOption("Aryan Auton Command", new Auton(m_drivetrain, m_onboardIO));
     SmartDashboard.putData(m_chooser);
   }
 
