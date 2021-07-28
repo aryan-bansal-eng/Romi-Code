@@ -9,14 +9,17 @@ import frc.robot.subsystems.Drivetrain;
 
 public class Auton extends SequentialCommandGroup {
 
-  /** Creates a new Auton. */
+  /** Creates a new Auton.
+   *  
+   * @param drivetrain The drivetrain subsystem on which this command will rum
+  */
   public Auton(Drivetrain drivetrain) 
   {
-    // Use addRequirements() here to declare subsystem dependencies
     addCommands(
       new DriveDistance(0.6, 12, drivetrain),
       new TurnDegrees(0.6, 90, drivetrain),
-      new DriveDistance(0.6, 12, drivetrain)
+      new DriveDistance(0.6, 12, drivetrain),
+      new DriveAndTurn(0.6, 12, 0.6, drivetrain)
     );
   }
 }
